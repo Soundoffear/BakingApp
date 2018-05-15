@@ -33,18 +33,6 @@ public class StepDetailsActivity extends AppCompatActivity implements View.OnCli
     int nextPosition = 0;
     private List<StepsModel> stepsModelList;
 
-    @Nullable
-    private SimpleIdlingResource mIdlingResource;
-
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getmIdlingResource() {
-        if(mIdlingResource == null) {
-            mIdlingResource = new SimpleIdlingResource();
-        }
-        return mIdlingResource;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

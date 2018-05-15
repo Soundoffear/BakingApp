@@ -2,8 +2,11 @@ package com.example.soundoffear.bakingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.TabLayout;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -24,6 +27,18 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
     private final static String INGREDIENT_DATA = "saved_ing_data_JSON";
     private final static String STEPS_DATA = "saved_steps_data_JSON";
+
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getmIdlingResource() {
+        if(mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +67,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
             sIngredients = savedInstanceState.getString(INGREDIENT_DATA);
             sSteps = savedInstanceState.getString(STEPS_DATA);
         }
-
 
     }
 

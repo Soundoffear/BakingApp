@@ -8,7 +8,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,12 +58,40 @@ public class DetailsFragmentStep extends Fragment {
         }
 
         if(getContext().getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Intent intent = new Intent(getActivity(), FullScreenExoActivity.class);
-            intent.putExtra(FullScreenExoActivity.FULL_SCREEN_URI, videoURI);
-            startActivity(intent);
+            if(!isTablet()) {
+                Intent intent = new Intent(getActivity(), FullScreenExoActivity.class);
+                intent.putExtra(FullScreenExoActivity.FULL_SCREEN_URI, videoURI);
+                intent.putExtra(FullScreenExoActivity.EXO_STATE, ExoplayerHandlerUtility.getInstance().getCurrentPosition());
+                startActivity(intent);
+            } else {
+                if(!TextUtils.isEmpty(videoURI)) {
+                    ExoplayerHandlerUtility.getInstance().uriExoplayer(getContext(), Uri.parse(videoURI), simpleExoPlayerView);
+                } else {
+                    ExoplayerHandlerUtility.getInstance().uriExoplayer(getContext(), Uri.parse(thumbURI), simpleExoPlayerView);
+                }
+            }
         }
 
         return fragmentDetailView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    public boolean isTablet() {
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        display.getMetrics(displayMetrics);
+
+        double wInches = displayMetrics.widthPixels / (double) displayMetrics.densityDpi;
+        double hInches = displayMetrics.heightPixels / (double) displayMetrics.densityDpi;
+
+        double screenDiagonal = Math.sqrt(Math.pow(wInches, 2) + Math.pow(hInches, 2));
+
+        return screenDiagonal > 7;
+
+    }
 }

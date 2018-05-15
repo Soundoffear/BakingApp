@@ -95,4 +95,17 @@ public class ExoplayerHandlerUtility {
             player.setPlayWhenReady(true);
         }
     }
+
+    public long getCurrentPosition() {
+        if(player != null) {
+            return player.getCurrentPosition();
+        }
+        return 0;
+    }
+
+    public void setPlayerSeek(long position) {
+        if(player != null) {
+            player.seekTo(position);
+        }
+    }
 }
